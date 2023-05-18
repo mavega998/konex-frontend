@@ -11,8 +11,8 @@ export class SaleService {
 
   constructor(private httpClient: HttpClient) { }
 
-  listAll() {
-    return this.httpClient.get(`${environment.apiUrl}/${this.module}/list`)
+  listAll(page = 0, size = 10) {
+    return this.httpClient.get(`${environment.apiUrl}/${this.module}/list?page=${page}&size=${size}`)
   }
 
   save(sale: any) {
@@ -24,6 +24,6 @@ export class SaleService {
   }
 
   delete(id: number) {
-    return this.httpClient.delete(`${environment.apiUrl}/${this.module}/delete/${id}`)
+    return this.httpClient.delete(`${environment.apiUrl}/${this.module}/${id}`)
   }
 }

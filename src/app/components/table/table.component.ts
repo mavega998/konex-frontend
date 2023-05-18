@@ -14,6 +14,7 @@ export class TableComponent implements OnInit {
   @Input() showBtnNew = true;
   @Input() showBtnEdit = true;
   @Input() showBtnBuy = true;
+  @Input() showBtnDelete = true;
   @Input() set items(value: any) {
     this._items = value;
   }
@@ -25,6 +26,7 @@ export class TableComponent implements OnInit {
   @Output() handleBtnNew = new EventEmitter();
   @Output() handleBtnEdit = new EventEmitter();
   @Output() handleBtnBuy = new EventEmitter();
+  @Output() handleBtnDelete = new EventEmitter();
 
   constructor() { }
 

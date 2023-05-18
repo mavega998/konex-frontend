@@ -1,6 +1,6 @@
 <app-table [title]="'Medicamentos'" [columnNames]="columnNames" [items]="medicines" (handleBtnReload)="loadData()"
   (handleBtnNew)="newMedicine()" (handleBtnBuy)="sellMedicine($event)"
-  (handleBtnEdit)="editMedicine($event)"></app-table>
+  (handleBtnEdit)="editMedicine($event)" (handleBtnDelete)="confirmModal($event)"></app-table>
 <p-dialog header="Nuevo Medicamento" [(visible)]="showModal" [modal]="true" [draggable]="false"
   [style]="{ width: '50vw', height: '75vh' }">
   <form [formGroup]="medicine" class="formgrid grid">
@@ -58,7 +58,7 @@
       <label htmlFor="quantity">Cantidad a Comprar</label>
       <input type="number" pInputText min="0" id="quantity" formControlName="quantity"
         class="text-base text-color surface-overlay p-2 border-1 border-solid border-round appearance-none outline-none focus:border-primary w-full"
-        [ngClass]="{ 'surface-border': medicine.get('quantity')?.errors === null, 'border-red-500': medicine.get('stock')?.errors !== null }">
+        [ngClass]="{ 'surface-border': medicine.get('quantity')?.errors === null, 'border-red-500': medicine.get('quantity')?.errors !== null }">
     </div>
     <div class="col-12">
       <b>Total a pagar:</b> {{ sale.get('quantity')?.value * medicineSelected.price | currency:'USD':'symbol':'0.0-0' }}
@@ -67,4 +67,11 @@
       <p-button label="Hacer compra" [disabled]="sale.invalid" (onClick)="buyItem()"></p-button>
     </div>
   </form>
+</p-dialog>
+<p-dialog header="Eliminar Medicamento" [(visible)]="showConfirmModal" [modal]="true" [draggable]="false">
+  <p>
+    ¿Está seguro qué desea eliminar el medicamento {{medicineSelected?.name}}?
+  </p>
+  <p-button class="mx-1" styleClass="p-button-primary" (onClick)="deleteMedicine()">Si</p-button>
+  <p-button class="mx-1" styleClass="p-button-secondary" (onClick)="showConfirmModal = false">No</p-button>
 </p-dialog>

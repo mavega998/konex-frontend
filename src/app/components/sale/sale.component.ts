@@ -40,7 +40,7 @@ export class SaleComponent implements OnInit {
   loadData() {
     this.sales = [];
     this.saleService.listAll().subscribe((data: any) => {
-      this.sales = data;
+      this.sales = data.content;
     });
   }
 }

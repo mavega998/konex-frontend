@@ -16,6 +16,7 @@ export class MedicineComponent implements OnInit {
 
   showModal = false;
   showModalBuy = false;
+  showConfirmModal = false;
 
   medicine!: FormGroup;
   sale!: FormGroup;
@@ -59,7 +60,7 @@ export class MedicineComponent implements OnInit {
   loadData() {
     this.medicines = [];
     this.medicineService.listAll().subscribe((data: any) => {
-      this.medicines = data;
+      this.medicines = data.content;
     });
   }
 
@@ -119,5 +120,18 @@ export class MedicineComponent implements OnInit {
     this.medicine.reset();
     this.medicine.get('stock')?.setValue(0);
     this.medicine.get('price')?.setValue(0);
+  }
+
+  confirmModal(medicine: any) {
+    this.showConfirmModal = true;
+    this.medicineSelected = medicine;
+  }
+
+  deleteMedicine() {
+    this.medicineService.delete(this.medicineSelected.id).subscribe(data => {
+      console.log(data);
+      this.showConfirmModal = false;
+      this.loadData();
+    })
   }
 }

@@ -1,0 +1,14 @@
+::ng-deep .p-calendar .p-datepicker {
+  top: -110px !important;
+}
+
+::ng-deep .p-datepicker table {
+  font-size: 12px !important;
+  td {
+    padding: 0.5px !important;
+    span {
+      width: 15px;
+      height: 15px;
+    }
+  }
+}

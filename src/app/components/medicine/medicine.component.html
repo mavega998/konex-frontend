@@ -1,0 +1,70 @@
+<app-table [title]="'Medicamentos'" [columnNames]="columnNames" [items]="medicines" (handleBtnReload)="loadData()"
+  (handleBtnNew)="newMedicine()" (handleBtnBuy)="sellMedicine($event)"
+  (handleBtnEdit)="editMedicine($event)"></app-table>
+<p-dialog header="Nuevo Medicamento" [(visible)]="showModal" [modal]="true" [draggable]="false"
+  [style]="{ width: '50vw', height: '75vh' }">
+  <form [formGroup]="medicine" class="formgrid grid">
+    <div class="field col-6">
+      <label htmlFor="name">Nombre</label>
+      <input type="text" pInputText id="name" formControlName="name"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid border-round appearance-none outline-none focus:border-primary w-full"
+        [ngClass]="{ 'surface-border': !medicine.get('name')?.touched && medicine.get('name')?.errors === null, 'border-red-500': medicine.get('name')?.touched && medicine.get('name')?.errors !== null }">
+    </div>
+    <div class="field col-6">
+      <label htmlFor="lab">Laboratorio</label>
+      <input type="text" pInputText id="lab" formControlName="lab"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid border-round appearance-none outline-none focus:border-primary w-full"
+        [ngClass]="{ 'surface-border': !medicine.get('lab')?.touched && medicine.get('lab')?.errors === null, 'border-red-500': medicine.get('lab')?.touched && medicine.get('lab')?.errors !== null }">
+    </div>
+    <div class="field col-6">
+      <label htmlFor="createDate">Fecha de Creación</label>
+      <input type="date" pInputText id="dueDate" formControlName="createDate"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid border-round appearance-none outline-none focus:border-primary w-full"
+        [ngClass]="{ 'surface-border': !medicine.get('createDate')?.touched && medicine.get('createDate')?.errors === null, 'border-red-500': medicine.get('createDate')?.touched && medicine.get('createDate')?.errors !== null }">
+    </div>
+    <div class="field col-6">
+      <label htmlFor="dueDate">Fecha de Vencimiento</label>
+      <input type="date" pInputText id="dueDate" formControlName="dueDate"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid border-round appearance-none outline-none focus:border-primary w-full"
+        [ngClass]="{ 'surface-border': !medicine.get('dueDate')?.touched && medicine.get('dueDate')?.errors === null, 'border-red-500': medicine.get('dueDate')?.touched && medicine.get('dueDate')?.errors !== null }">
+    </div>
+    <div class="field col-6">
+      <label htmlFor="stock">Cantidad</label>
+      <input type="number" pInputText min="0" id="stock" formControlName="stock"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid border-round appearance-none outline-none focus:border-primary w-full"
+        [ngClass]="{ 'surface-border': medicine.get('stock')?.errors === null, 'border-red-500': medicine.get('stock')?.errors !== null }">
+    </div>
+    <div class="field col-6">
+      <label htmlFor="price">Precio Unitario</label>
+      <input type="number" pInputText min="0" id="price" formControlName="price"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid border-round appearance-none outline-none focus:border-primary w-full"
+        [ngClass]="{ 'surface-border': medicine.get('price')?.errors === null, 'border-red-500': medicine.get('price')?.errors !== null }">
+    </div>
+  </form>
+  <div [style]="{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '20px' }">
+    <p-button label="Guardar" [disabled]="medicine.invalid" (onClick)="saveMedicine()"></p-button>
+  </div>
+</p-dialog>
+<p-dialog header="Nueva Venta" [(visible)]="showModalBuy" [modal]="true" [draggable]="false"
+  [style]="{ width: '35vw', height: '60vh' }">
+  <form [formGroup]="sale" class="formgrid grid" *ngIf="medicineSelected">
+    <div class="col-12">
+      <b>Producto:</b> {{medicineSelected.name}} ({{medicineSelected.price | currency:'USD':'symbol':'0.0-0'}})
+    </div>
+    <div class="col-12">
+      <b>Cantidad en Stock:</b> {{medicineSelected.stock}}
+    </div>
+    <div class="field col-12 mt-2">
+      <label htmlFor="quantity">Cantidad a Comprar</label>
+      <input type="number" pInputText min="0" id="quantity" formControlName="quantity"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid border-round appearance-none outline-none focus:border-primary w-full"
+        [ngClass]="{ 'surface-border': medicine.get('quantity')?.errors === null, 'border-red-500': medicine.get('stock')?.errors !== null }">
+    </div>
+    <div class="col-12">
+      <b>Total a pagar:</b> {{ sale.get('quantity')?.value * medicineSelected.price | currency:'USD':'symbol':'0.0-0' }}
+    </div>
+    <div class="col-12 mt-3">
+      <p-button label="Hacer compra" [disabled]="sale.invalid" (onClick)="buyItem()"></p-button>
+    </div>
+  </form>
+</p-dialog>
